@@ -10,6 +10,7 @@
     // .then(function(myJson) {
     //     console.log(myJson);
     // });
+
     let animalsSearched = [];
 
     (function(window, document, undefined){
@@ -33,9 +34,6 @@
         let animal = document.getElementById("add-animal-input").value;
         let btn;
 
-        // console.log(animal);
-        // console.log(animal.value);
-
         if ( ! (animal.value === "" || animalsSearched.includes(animal)) ) {
             
             // adding animal to the array of animals searched
@@ -51,33 +49,47 @@
 
                 let btn = event.target;
                 let search = btn.getAttribute("data-value");
-                let queryURL = "https://api.giphy.com/v1/gifs/search?q="+search+"&api_key="+config.GIPHY_KEY;
+                let queryURL = "https://api.giphy.com/v1/gifs/search?q="+search+"&limit=12&api_key="+config.GIPHY_KEY;
 
                 fetch(queryURL)
                 .then(function(response) {
                     return response.json();
                 })
                 .then(function(json) {
-                    // console.log(json);
 
                     let data = json.data;
-                    // console.log(data);
-                    // print information to web page
                     
+                    console.log(data);
+
+                    let row = document.createElement("section");
+                    row.setAttribute("class", "row");
+
                     for(i in data) {
-                        // console.log(data[i]);
+                        console.log(i + " | " + (i % 4));
 
-                        // console.log(data[i].rating);
-                        // console.log(data[i].images.original.url);
-                        // console.log(data[i].images.original_still.url);
-
-                        let p = document.createElement("p");
+                        // create an image tag
                         let img = document.createElement("img");
 
-                        p.textContent = "data rating is " + data[i].rating;
-                        img.setAttribute("src", data[i].images.original.url);
+                        // add a source to the image tag
+                        img.setAttribute("src", data[i].images.fixed_height.url);
 
-                        document.getElementById("images-go-here").append(p, img);
+                        // create a new row AFTER every 4th image is created
+                        if (i % 4 === 0 && i!=0) {
+                            row = document.createElement("section");
+                            row.setAttribute("class", "row");
+                        }
+
+                        // append the img to the row
+                        row.append(img);
+
+                        // every 4th image created, append a new row
+                        if (i % 4 === 3) {
+                            document.getElementById("images-go-here").append(row);
+
+                            // then create a new row
+                            row = document.createElement("section");
+                            row.setAttribute("class", "row");
+                        }
                     }
                 });
 
@@ -86,40 +98,4 @@
 
             document.getElementById("buttons-go-here").append(btn);
         }
-    }
-
-    function searchForGiph() {
-        // search the api for giph images for the specified query
-        console.log();
-
-        let search = document.getElementById(this);
-        let queryURL = "https://api.giphy.com/v1/gifs/search?q="+search+"&api_key="+config.GIPHY_KEY;
-
-        fetch(queryURL)
-        .then(function(response) {
-            return response.json();
-        })
-        .then(function(json) {
-            // console.log(json);
-
-            let data = json.data;
-            // console.log(data);
-            // print information to web page
-            
-            for(i in data) {
-                // console.log(data[i]);
-
-                // console.log(data[i].rating);
-                // console.log(data[i].images.original.url);
-                // console.log(data[i].images.original_still.url);
-
-                let p = document.createElement("p");
-                let img = document.createElement("img");
-
-                p.textContent = "data rating is " + data[i].rating;
-                img.setAttribute("src", data[i].images.original.url);
-
-                document.getElementById("images-go-here").append(p, img);
-            }
-        });
     }
