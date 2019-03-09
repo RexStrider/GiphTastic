@@ -22,6 +22,8 @@
                 btn.setAttribute("data-value", animal);
                 btn.textContent = animal;
                 btn.addEventListener("click", function(event) {
+                    document.getElementById("animate-prompt").innerText="Click on an image to animate the gif";
+
                     let btn = event.target;
                     let search = btn.getAttribute("data-value");
                     let queryURL = "https://api.giphy.com/v1/gifs/search?q="+search+"&limit=12&api_key="+config.GIPHY_KEY;
@@ -120,6 +122,8 @@
             btn.textContent = animal;
             btn.addEventListener("click", function(event) {
                 console.log(event.target);
+
+                document.getElementById("animate-prompt").innerText="Click on an image to animate the gif";
 
                 let btn = event.target;
                 let search = btn.getAttribute("data-value");
