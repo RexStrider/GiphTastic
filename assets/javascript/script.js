@@ -1,17 +1,4 @@
-    // let search = "cats";
-
-    // queryURL for Giphy API
-    // let queryURL = "https://api.giphy.com/v1/gifs/search?q="+search+"&api_key="+config.GIPHY_KEY;
-
-    // fetch(queryURL)
-    // .then(function(response) {
-    //     return response.json();
-    // })
-    // .then(function(myJson) {
-    //     console.log(myJson);
-    // });
-
-    let animalsSearched = [];
+    let animalsSearched = ["parrot", "corgi", "bird", "fish", "tiger"];
 
     (function(window, document, undefined){
         
@@ -24,6 +11,13 @@
             console.log(animalBtn);
 
             animalBtn.addEventListener("click", addAnimalSearchButton);
+
+            for (i in animalsSearched) {
+                let animal = animalsSearched[i];
+                console.log(animal);
+
+
+            }
         }
         
     })(window, document, undefined);
@@ -56,25 +50,52 @@
                     return response.json();
                 })
                 .then(function(json) {
+                    // remove previous search from the images section
+                    document.getElementById("images-go-here").innerHTML="";
 
+                    // prepares the json data from giphy
                     let data = json.data;
                     
                     console.log(data);
 
+                    // create a new row for the images
                     let row = document.createElement("section");
                     row.setAttribute("class", "row");
 
+                    // set the number of images per row
+                    let imagesPerRow = 3;
+
                     for(i in data) {
-                        console.log(i + " | " + (i % 4));
 
                         // create an image tag
                         let img = document.createElement("img");
 
                         // add a source to the image tag
-                        img.setAttribute("src", data[i].images.fixed_height.url);
+                        let animateURL = data[i].images.fixed_height.url;
+                        let stillURL = data[i].images.fixed_height_still.url
+
+                        img.setAttribute("src", stillURL);
+                        img.setAttribute("data-state", "still");
+                        // img.setAttribute("data-animate", animateURL);
+                        // img.setAttribute("data-still", stillURL);
+                        img.addEventListener("click", function() {
+                            
+                            console.log(this);
+                            // console.log(img);
+
+                            let state = this.getAttribute("data-state");
+    
+                            if (state === "still") {
+                                this.setAttribute("src", animateURL);
+                                this.setAttribute("data-state", "animate");
+                            } else {
+                                this.setAttribute("src", stillURL);
+                                this.setAttribute("data-state", "still");
+                            }
+                        });
 
                         // create a new row AFTER every 4th image is created
-                        if (i % 4 === 0 && i!=0) {
+                        if (i % imagesPerRow === 0 && i!=0) {
                             row = document.createElement("section");
                             row.setAttribute("class", "row");
                         }
@@ -82,8 +103,7 @@
                         // append the img to the row
                         row.append(img);
 
-                        // every 4th image created, append a new row
-                        if (i % 4 === 3) {
+                        if ( (i % imagesPerRow) === (imagesPerRow - 1)) {
                             document.getElementById("images-go-here").append(row);
 
                             // then create a new row
@@ -92,8 +112,6 @@
                         }
                     }
                 });
-
-                
             });
 
             document.getElementById("buttons-go-here").append(btn);
