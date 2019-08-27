@@ -4,7 +4,7 @@ A simple application that finds gif images and displays them.
 
 ## Description
 
-This is a pretty simple application I developed to experiment connecting to an API using basic JavaScript.
+This is a pretty simple application I developed to experiment with connecting to an API using basic JavaScript.
 
 ## Instructions
 
