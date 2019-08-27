@@ -16,4 +16,4 @@ If you'd like to check it out, then click the link below.
  - JavaScript
  - HTML
  - CSS
- - FlexBox
+ - Flexbox
