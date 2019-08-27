@@ -13,6 +13,7 @@ If you'd like to check it out, then click the link below.
 ## Technology
 
  - Giphy API
+ - JavaScript
  - HTML
  - CSS
- - JavaScript
+ - FlexBox
